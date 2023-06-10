@@ -3,7 +3,8 @@ from django.shortcuts import render, redirect
 from .models import *
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
-
+from django.contrib.auth.views import PasswordResetView
+from django.contrib.auth.forms import PasswordResetForm
 
 # Create your views here.
 def home(request):
@@ -49,3 +50,17 @@ def Login(request):
 def Logout(request):
     logout(request)
     return redirect('login')
+
+
+class CustomPasswordResetView(PasswordResetView):
+    form_class = PasswordResetForm
+    template_name = 'password_reset.html'
+
+    def form_valid(self, form):
+        email = form.cleaned_data['email']
+        # Add your custom logic to check if the email exists in the database
+        if not User.objects.filter(email=email).exists():
+            # Email doesn't exist, handle the error as desired (e.g., show an error message)
+            return render(self.request, 'password_reset.html', {'error': 'Email does not exist.','form':PasswordResetForm})
+
+        return super().form_valid(form)

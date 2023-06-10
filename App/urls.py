@@ -8,7 +8,7 @@ urlpatterns = [
     path('logout', views.Logout, name='logout'),
 
     path('reset_password/',
-         auth_views.PasswordResetView.as_view(template_name='password_reset.html'),
+         views.CustomPasswordResetView.as_view(template_name='password_reset.html'),
          name='password_reset'),
     # men7et as_view() la2enno class base views
 
