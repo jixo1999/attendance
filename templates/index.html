@@ -22,7 +22,30 @@
     <script nonce="b90e3e14-3d12-40eb-a2ed-6c6ded6e645a">
         (function(w,d){!function(bg,bh,bi,bj){bg[bi]=bg[bi]||{};bg[bi].executed=[];bg.zaraz={deferred:[],listeners:[]};bg.zaraz.q=[];bg.zaraz._f=function(bk){return function(){var bl=Array.prototype.slice.call(arguments);bg.zaraz.q.push({m:bk,a:bl})}};for(const bm of["track","set","debug"])bg.zaraz[bm]=bg.zaraz._f(bm);bg.zaraz.init=()=>{var bn=bh.getElementsByTagName(bj)[0],bo=bh.createElement(bj),bp=bh.getElementsByTagName("title")[0];bp&&(bg[bi].t=bh.getElementsByTagName("title")[0].text);bg[bi].x=Math.random();bg[bi].w=bg.screen.width;bg[bi].h=bg.screen.height;bg[bi].j=bg.innerHeight;bg[bi].e=bg.innerWidth;bg[bi].l=bg.location.href;bg[bi].r=bh.referrer;bg[bi].k=bg.screen.colorDepth;bg[bi].n=bh.characterSet;bg[bi].o=(new Date).getTimezoneOffset();if(bg.dataLayer)for(const bt of Object.entries(Object.entries(dataLayer).reduce(((bu,bv)=>({...bu[1],...bv[1]})))))zaraz.set(bt[0],bt[1],{scope:"page"});bg[bi].q=[];for(;bg.zaraz.q.length;){const bw=bg.zaraz.q.shift();bg[bi].q.push(bw)}bo.defer=!0;for(const bx of[localStorage,sessionStorage])Object.keys(bx||{}).filter((bz=>bz.startsWith("_zaraz_"))).forEach((by=>{try{bg[bi]["z_"+by.slice(7)]=JSON.parse(bx.getItem(by))}catch{bg[bi]["z_"+by.slice(7)]=bx.getItem(by)}}));bo.referrerPolicy="origin";bo.src="../../cdn-cgi/zaraz/sd0d9.js?z="+btoa(encodeURIComponent(JSON.stringify(bg[bi])));bn.parentNode.insertBefore(bo,bn)};["complete","interactive"].includes(bh.readyState)?zaraz.init():bg.addEventListener("DOMContentLoaded",zaraz.init)}(w,d,"zarazData","script");})(window,document);
 
+
+
     </script>
+    <!-- here's the style for the scrollbar in the classroom card -->
+    <style>
+          /* Style the scrollbar */
+            .description::-webkit-scrollbar {
+                width: 8px; /* Adjust the width of the scrollbar */
+            }
+
+            .description::-webkit-scrollbar-track {
+                background: #f1f1f1; /* Set the background color of the scrollbar track */
+            }
+
+            .description::-webkit-scrollbar-thumb {
+                background: #888; /* Set the color of the scrollbar thumb */
+            }
+
+            .description::-webkit-scrollbar-thumb:hover {
+                background: #555; /* Set the color of the scrollbar thumb on hover */
+            }
+
+
+    </style>
 </head>
 <body data-offset="300" data-spy="scroll" data-target=".site-navbar-target">
 <div class="site-wrap">
@@ -42,13 +65,13 @@
                     <nav class="site-navigation position-relative text-right" role="navigation">
                         <ul class="site-menu main-menu js-clone-nav mx-auto d-none d-lg-block  m-0 p-0">
                             {% if not request.user.is_authenticated %}
-                                <li><a class="nav-link" href="#home-section">Login</a></li>
+                            <li><a class="nav-link" href="#home-section">Login</a></li>
                             {% endif %}
                             <li><a class="nav-link" href="#courses-section">Classrooms</a></li>
                             <li><a class="nav-link" href="#programs-section">Programs</a></li>
-                            <li><a class="nav-link" href="#teachers-section">Teachers</a></li>
+                            <li><a class="nav-link" href="#teachers-section">Trainers</a></li>
                             {% if request.user.is_authenticated %}
-                                <li><a class="nav-link" href="{% url 'logout' %}">Logout</a></li>
+                            <li><a class="nav-link" href="{% url 'logout' %}">Logout</a></li>
                             {% endif %}
                         </ul>
                     </nav>
@@ -82,38 +105,41 @@
                                 <!--                                    Now</a></p>-->
                             </div>
                             <div class="col-lg-5 ml-auto" data-aos="fade-up" data-aos-delay="500">
-<!--                                {% if not request.user.is_authenticated %}-->
+                                <!--                                {% if not request.user.is_authenticated %}-->
                                 <form action="{% url 'login' %}" class="form-box" method="post">
                                     {% csrf_token %}
-                                    <h3 class="h4 text-black mb-4">Sign Up</h3>
+                                    <h3 class="h4 text-black mb-4">Log In</h3>
                                     <div class="form-group">
-                                        <input class="form-control" placeholder="Email Addresss" type="text" name="email" required>
+                                        <input class="form-control" name="email" placeholder="Email Addresss"
+                                               required type="text">
                                     </div>
                                     <div class="form-group">
-                                        <input class="form-control" placeholder="Password" type="password" name="pwd1" required>
+                                        <input class="form-control" name="pwd1" placeholder="Password" required
+                                               type="password">
                                     </div>
                                     <div class="form-group mb-4">
-                                        <input class="form-control" placeholder="Re-type Password" type="password" name="pwd2" required>
+                                        <input class="form-control" name="pwd2" placeholder="Re-type Password"
+                                               required type="password">
                                     </div>
                                     {% if error_message %}
-                                        <div class="form-group mb-4">
-                                            <p style="color:red">{{ error_message }}</p>
-                                        </div>
+                                    <div class="form-group mb-4">
+                                        <p style="color:red">{{ error_message }}</p>
+                                    </div>
                                     {% endif %}
                                     <div class="form-group">
                                         <input class="btn btn-primary btn-pill" type="submit" value="Sign up">
                                         <a href='{% url "password_reset" %}'>Forgot password??</a>
                                     </div>
                                 </form>
-<!--                                {% else %}-->
-<!--                                <form action="{% url 'logout' %}" class="form-box" method="post">-->
-<!--                                    <h2>Welcome {{request.user.username}}!!</h2>-->
-<!--                                    {% csrf_token %}-->
-<!--                                    <div class="form-group">-->
-<!--                                        <input class="btn btn-primary btn-pill" type="submit" value="Logout">-->
-<!--                                    </div>-->
-<!--                                </form>-->
-<!--                                {% endif %}-->
+                                <!--                                {% else %}-->
+                                <!--                                <form action="{% url 'logout' %}" class="form-box" method="post">-->
+                                <!--                                    <h2>Welcome {{request.user.username}}!!</h2>-->
+                                <!--                                    {% csrf_token %}-->
+                                <!--                                    <div class="form-group">-->
+                                <!--                                        <input class="btn btn-primary btn-pill" type="submit" value="Logout">-->
+                                <!--                                    </div>-->
+                                <!--                                </form>-->
+                                <!--                                {% endif %}-->
                             </div>
                         </div>
                     </div>
@@ -135,102 +161,55 @@
         <div class="container">
             <div class="row">
                 <div class="owl-carousel col-12 nonloop-block-14">
+                    {% for classroom in all_classrooms %}
                     <div class="course bg-white h-100 align-self-stretch">
                         <figure class="m-0">
-                            <a href="course-single.html"><img alt="Image" class="img-fluid" src="images/img_1.jpg"></a>
+                            <a href="{% url 'course_single' classroom.id %}"><img alt="Image" class="img-fluid"
+                                                                                  src="{{classroom.image.url}}"></a>
                         </figure>
-                        <div class="course-inner-text py-4 px-4">
-                            <span class="course-price">$20</span>
-                            <div class="meta"><span class="icon-clock-o"></span>4 Lessons / 12 week</div>
-                            <h3><a href="#">Study Law of Physics</a></h3>
-                            <p>Lorem ipsum dolor sit amet ipsa nulla adipisicing elit. </p>
+                        <div class="course-inner-text py-4 px-4"
+                             style="display:flex;flex-direction:column;height:300px;">
+
+                            <div class="meta" style="display:flex;flex-direction:row;align-items:center;"><span><img
+                                    src="{{classroom.trainer.profile_pic.url}}" style="
+                                        border-radius: 50%;
+                                        width: 100%;
+                                        height: 55px;"/></span>By trainer {{classroom.trainer.name}}
+                            </div>
+                            <h3><a href="{% url 'course_single' classroom.id %}">{{classroom.name}}</a></h3>
+                            <p class="description" style="overflow:auto;">{{classroom.description}}</p>
                         </div>
-                        <div class="d-flex border-top stats">
-                            <div class="py-3 px-4"><span class="icon-users"></span> 2,193 students</div>
-                            <div class="py-3 px-4 w-25 ml-auto border-left"><span class="icon-chat"></span> 2</div>
+                        <div class="d-flex border-top stats" style="font-size:1.12rem;">
+                            {% if request.user.is_authenticated and request.user.trainer %}
+                            <div class="py-3 px-4"><a class="btn btn-primary" href="#">Go to Classroom!</a></div>
+                            {% elif request.user.is_authenticated and request.user.attendee %}
+                            {% if request.user.attendee in classroom.attendees.all %}
+                            <div class="py-3 px-4"><p>Already enrolled</p></div>
+                            {% else %}
+                            <div class="py-3 px-4"><a class="btn btn-primary" href='{% url "enroll" classroom.id %}'>Enroll
+                                now!</a></div>
+                            {% endif %}
+                            {% elif request.user.is_authenticated and request.user.is_superuser %}
+                            <div class="py-3 px-4">
+                                <a class="btn btn-primary" href="#">Update</a>
+                                <a class="btn btn-primary" href="#">Delete</a>
+                            </div>
+                            {% else %}
+                            <div class="py-3 px-4"><a class="btn btn-primary" href="{% url 'login' %}">Enroll now!</a>
+                            </div>
+                            {% endif %}
                         </div>
                     </div>
-                    <div class="course bg-white h-100 align-self-stretch">
-                        <figure class="m-0">
-                            <a href="course-single.html"><img alt="Image" class="img-fluid" src="images/img_2.jpg"></a>
-                        </figure>
-                        <div class="course-inner-text py-4 px-4">
-                            <span class="course-price">$99</span>
-                            <div class="meta"><span class="icon-clock-o"></span>4 Lessons / 12 week</div>
-                            <h3><a href="#">Logo Design Course</a></h3>
-                            <p>Lorem ipsum dolor sit amet ipsa nulla adipisicing elit. </p>
-                        </div>
-                        <div class="d-flex border-top stats">
-                            <div class="py-3 px-4"><span class="icon-users"></span> 2,193 students</div>
-                            <div class="py-3 px-4 w-25 ml-auto border-left"><span class="icon-chat"></span> 2</div>
-                        </div>
-                    </div>
-                    <div class="course bg-white h-100 align-self-stretch">
-                        <figure class="m-0">
-                            <a href="course-single.html"><img alt="Image" class="img-fluid" src="images/img_3.jpg"></a>
-                        </figure>
-                        <div class="course-inner-text py-4 px-4">
-                            <span class="course-price">$99</span>
-                            <div class="meta"><span class="icon-clock-o"></span>4 Lessons / 12 week</div>
-                            <h3><a href="#">JS Programming Language</a></h3>
-                            <p>Lorem ipsum dolor sit amet ipsa nulla adipisicing elit. </p>
-                        </div>
-                        <div class="d-flex border-top stats">
-                            <div class="py-3 px-4"><span class="icon-users"></span> 2,193 students</div>
-                            <div class="py-3 px-4 w-25 ml-auto border-left"><span class="icon-chat"></span> 2</div>
-                        </div>
-                    </div>
-                    <div class="course bg-white h-100 align-self-stretch">
-                        <figure class="m-0">
-                            <a href="course-single.html"><img alt="Image" class="img-fluid" src="images/img_4.jpg"></a>
-                        </figure>
-                        <div class="course-inner-text py-4 px-4">
-                            <span class="course-price">$20</span>
-                            <div class="meta"><span class="icon-clock-o"></span>4 Lessons / 12 week</div>
-                            <h3><a href="#">Study Law of Physics</a></h3>
-                            <p>Lorem ipsum dolor sit amet ipsa nulla adipisicing elit. </p>
-                        </div>
-                        <div class="d-flex border-top stats">
-                            <div class="py-3 px-4"><span class="icon-users"></span> 2,193 students</div>
-                            <div class="py-3 px-4 w-25 ml-auto border-left"><span class="icon-chat"></span> 2</div>
-                        </div>
-                    </div>
-                    <div class="course bg-white h-100 align-self-stretch">
-                        <figure class="m-0">
-                            <a href="course-single.html"><img alt="Image" class="img-fluid" src="images/img_5.jpg"></a>
-                        </figure>
-                        <div class="course-inner-text py-4 px-4">
-                            <span class="course-price">$99</span>
-                            <div class="meta"><span class="icon-clock-o"></span>4 Lessons / 12 week</div>
-                            <h3><a href="#">Logo Design Course</a></h3>
-                            <p>Lorem ipsum dolor sit amet ipsa nulla adipisicing elit. </p>
-                        </div>
-                        <div class="d-flex border-top stats">
-                            <div class="py-3 px-4"><span class="icon-users"></span> 2,193 students</div>
-                            <div class="py-3 px-4 w-25 ml-auto border-left"><span class="icon-chat"></span> 2</div>
-                        </div>
-                    </div>
-                    <div class="course bg-white h-100 align-self-stretch">
-                        <figure class="m-0">
-                            <a href="course-single.html"><img alt="Image" class="img-fluid" src="images/img_6.jpg"></a>
-                        </figure>
-                        <div class="course-inner-text py-4 px-4">
-                            <span class="course-price">$99</span>
-                            <div class="meta"><span class="icon-clock-o"></span>4 Lessons / 12 week</div>
-                            <h3><a href="#">JS Programming Language</a></h3>
-                            <p>Lorem ipsum dolor sit amet ipsa nulla adipisicing elit. </p>
-                        </div>
-                        <div class="d-flex border-top stats">
-                            <div class="py-3 px-4"><span class="icon-users"></span> 2,193 students</div>
-                            <div class="py-3 px-4 w-25 ml-auto border-left"><span class="icon-chat"></span> 2</div>
-                        </div>
-                    </div>
+                    {% endfor %}
                 </div>
             </div>
             <div class="row justify-content-center">
                 <div class="col-7 text-center">
                     <button class="customPrevBtn btn btn-primary m-1">Prev</button>
                     <button class="customNextBtn btn btn-primary m-1">Next</button>
+                    {% if request.user.is_authenticated and request.user.is_superuser %}
+                    <a class="btn btn-primary" href="#">Create new Classroom</a>
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -305,45 +284,47 @@
         <div class="container">
             <div class="row mb-5 justify-content-center">
                 <div class="col-lg-7 mb-5 text-center" data-aos="fade-up" data-aos-delay="">
-                    <h2 class="section-title">Our Teachers</h2>
-                    <p class="mb-5">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Magnam repellat aut neque!
-                        Doloribus sunt non aut reiciendis, vel recusandae obcaecati hic dicta repudiandae in quas
-                        quibusdam ullam, illum sed veniam!</p>
+                    <h2 class="section-title">Our Trainers</h2>
+                    <p class="mb-5">Our training center is incredibly fortunate to have an exceptional trainer leading
+                        the way. With vast knowledge and expertise, our trainer serves as a true inspiration for all.
+                        Their dedication to teaching and empowering others is unwavering, as they create a nurturing
+                        environment for growth. Patient and approachable, our trainer simplifies complex concepts,
+                        making learning accessible and enjoyable. Their support and guidance go beyond the classroom,
+                        encouraging us to surpass our own expectations. With our trainer, success is not just a goal;
+                        it's a reality waiting to be achieved.</p>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-md-6 col-lg-4 mb-4" data-aos="fade-up" data-aos-delay="100">
-                    <div class="teacher text-center">
-                        <img alt="Image" class="img-fluid w-50 rounded-circle mx-auto mb-4" src="images/person_1.jpg">
-                        <div class="py-2">
-                            <h3 class="text-black">Benjamin Stone</h3>
-                            <p class="position">Physics Teacher</p>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Porro eius suscipit delectus
-                                enim iusto tempora, adipisci at provident.</p>
+        </div>
+        <div class="site-section courses-entry-wrap" data-aos="fade-up" data-aos-delay="100">
+            <div class="container">
+                <div class="row">
+                    <div class="owl-carousel col-12 nonloop-block-14">
+                    {% for trainer in trainers %}
+                        <div class="col-md-6 col-lg-4 mb-4" data-aos="fade-up" data-aos-delay="100">
+                            <div class="teacher text-center course bg-white ">
+                                <img alt="Image" class="img-fluid w-50 rounded-circle mx-auto mb-4" src="{{ trainer.profile_pic.url }}">
+                                <div class="py-2">
+                                    <h3 class="text-black">{{ trainer.name }}</h3>
+                                    <p class="position">{{ trainer.expertise }}</p>
+<!--                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Porro eius suscipit delectus-->
+<!--                                enim iusto tempora, adipisci at provident.</p>-->
+                                </div>
+                            </div>
                         </div>
+                    {% endfor %}
                     </div>
                 </div>
-                <div class="col-md-6 col-lg-4 mb-4" data-aos="fade-up" data-aos-delay="200">
-                    <div class="teacher text-center">
-                        <img alt="Image" class="img-fluid w-50 rounded-circle mx-auto mb-4" src="images/person_2.jpg">
-                        <div class="py-2">
-                            <h3 class="text-black">Katleen Stone</h3>
-                            <p class="position">Physics Teacher</p>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Porro eius suscipit delectus
-                                enim iusto tempora, adipisci at provident.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 col-lg-4 mb-4" data-aos="fade-up" data-aos-delay="300">
-                    <div class="teacher text-center">
-                        <img alt="Image" class="img-fluid w-50 rounded-circle mx-auto mb-4" src="images/person_3.jpg">
-                        <div class="py-2">
-                            <h3 class="text-black">Sadie White</h3>
-                            <p class="position">Physics Teacher</p>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Porro eius suscipit delectus
-                                enim iusto tempora, adipisci at provident.</p>
-                        </div>
-                    </div>
+            </div>
+        </div>
+
+
+            <div class="row justify-content-center">
+                <div class="col-7 text-center">
+                    <button class="customPrevBtn btn btn-primary m-1">Prev</button>
+                    <button class="customNextBtn btn btn-primary m-1">Next</button>
+                    {% if request.user.is_authenticated and request.user.is_superuser %}
+                    <a class="btn btn-primary" href="#">Add new trainer</a>
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -409,7 +390,7 @@
                         <div class="d-flex align-items-center custom-icon-wrap custom-icon-light">
                             <div class="mr-3"><span class="custom-icon-inner"><span class="icon icon-university"></span></span>
                             </div>
-                            <div><h3 class="m-0">Best Teachers</h3></div>
+                            <div><h3 class="m-0">Best Trainers</h3></div>
                         </div>
                     </div>
                 </div>
@@ -475,9 +456,9 @@
                     <h3>Links</h3>
                     <ul class="list-unstyled footer-links">
                         <li><a href="#">Home</a></li>
-                        <li><a href="#">Courses</a></li>
+                        <li><a href="#">Classrooms</a></li>
                         <li><a href="#">Programs</a></li>
-                        <li><a href="#">Teachers</a></li>
+                        <li><a href="#">Trainers</a></li>
                     </ul>
                 </div>
                 <div class="col-md-4">
@@ -498,9 +479,9 @@
                         <p>
 
                             Copyright &copy;<script>document.write(new Date().getFullYear());</script>
-<!--                            All rights reserved | This template is made with <i aria-hidden="true"-->
-<!--                                                                                class="icon-heart"></i> by <a-->
-<!--                                href="https://colorlib.com/" target="_blank">Colorlib</a>-->
+                            <!--                            All rights reserved | This template is made with <i aria-hidden="true"-->
+                            <!--                                                                                class="icon-heart"></i> by <a-->
+                            <!--                                href="https://colorlib.com/" target="_blank">Colorlib</a>-->
 
                         </p>
                     </div>
@@ -531,6 +512,8 @@
   gtag('js', new Date());
 
   gtag('config', 'UA-23581568-13');
+
+
 
 
 </script>

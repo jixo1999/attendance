@@ -27,4 +27,7 @@ urlpatterns = [
          auth_views.PasswordResetCompleteView.as_view(template_name='password_reset_done.html'),
          name='password_reset_complete'),
     # heda bi5aberna enno kel shi sa7 w sar fina na3mil login
+
+    path('enroll/<int:pk>',views.enroll_classroom,name = 'enroll'),
+    path('classroom/<int:pk>',views.classroom_info,name = 'course_single'),
 ]
